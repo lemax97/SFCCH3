@@ -1,19 +1,18 @@
 package SFCCh3;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Array;
 
-/**
- * Extend functionality of the LibGDX Actor class
- */
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
+import com.badlogic.gdx.graphics.g2d.Batch;
+
 
 public class BaseActor extends Actor {
 
@@ -22,17 +21,24 @@ public class BaseActor extends Actor {
     private boolean animationPaused;
 
     public BaseActor(float x, float y, Stage stage) {
+
         // call constructor from Actor class
         super();
+
         // perform additional initialization tasks
         setPosition(x, y);
         stage.addActor(this);
+
+        // initialize animation data
         animation = null;
         elapsedTime = 0;
         animationPaused = false;
+
     }
 
+
     public void setAnimation(Animation<TextureRegion> anim){
+
         animation = anim;
         TextureRegion textureRegion = animation.getKeyFrame(0);
         float w = textureRegion.getRegionWidth();
@@ -41,40 +47,11 @@ public class BaseActor extends Actor {
         setOrigin(w/2, h/2);
     }
 
-    public void setAnimationPaused(boolean pause){
-        animationPaused = pause;
-    }
-
-    public void act(float dt){
-        super.act(dt);
-
-        if (!animationPaused)
-            elapsedTime += dt;
-    }
-
-    public void draw(Batch batch, float parentAlpha){
-        super.draw(batch, parentAlpha);
-
-        // apply color tint effect
-        Color color = getColor();
-        batch.setColor(color.r, color.g, color.b, color.a);
-
-        if (animation != null && isVisible())
-            batch.draw( animation.getKeyFrame(elapsedTime),
-                    getX(),
-                    getY(),
-                    getOriginX(),
-                    getOriginY(),
-                    getWidth(),
-                    getHeight(),
-                    getScaleX(),
-                    getScaleY(),
-                    getRotation());
-    }
-
     public Animation<TextureRegion> loadAnimationFromFiles(String[] fileNames, float frameDuration, boolean loop){
+
         int fileCount = fileNames.length;
         Array<TextureRegion> textureArray = new Array<TextureRegion>();
+
         for (int n = 0; n < fileCount; n++) {
 
             String fileName = fileNames[n];
@@ -83,17 +60,17 @@ public class BaseActor extends Actor {
             textureArray.add(new TextureRegion(texture));
         }
 
-        Animation<TextureRegion> animation = new Animation<TextureRegion>(frameDuration, textureArray);
+        Animation<TextureRegion> anim = new Animation<TextureRegion>(frameDuration, textureArray);
 
         if (loop)
-            animation.setPlayMode(Animation.PlayMode.LOOP);
+            anim.setPlayMode(PlayMode.LOOP);
         else
-            animation.setPlayMode(Animation.PlayMode.NORMAL);
+            anim.setPlayMode(PlayMode.NORMAL);
 
         if (animation == null)
-            setAnimation(animation);
+            setAnimation(anim);
 
-        return animation;
+        return anim;
     }
 
     public Animation<TextureRegion> loadAnimationFromSheet(String fileName,
@@ -115,27 +92,61 @@ public class BaseActor extends Actor {
             for (int c = 0; c < cols; c++)
                 textureArray.add(temp[r][c]);
 
-        Animation<TextureRegion> animation = new Animation<TextureRegion>(frameDuration, textureArray);
+        Animation<TextureRegion> anim = new Animation<TextureRegion>(frameDuration, textureArray);
 
         if (loop)
-            animation.setPlayMode(Animation.PlayMode.LOOP);
+            anim.setPlayMode(PlayMode.LOOP);
         else
-            animation.setPlayMode(Animation.PlayMode.NORMAL);
+            anim.setPlayMode(PlayMode.NORMAL);
 
         if (animation == null)
-            setAnimation(animation);
+            setAnimation(anim);
 
-        return animation;
+        return anim;
     }
 
     public Animation<TextureRegion> loadTexture(String fileName){
+
         String[] fileNames = new String[1];
         fileNames[0] = fileName;
         return loadAnimationFromFiles(fileNames, 1, true);
     }
 
+    public void setAnimationPaused(boolean pause){
+        animationPaused = pause;
+    }
+
     public boolean isAnimationFinished(){
         return animation.isAnimationFinished(elapsedTime);
+    }
+
+    public void act(float dt){
+
+        super.act(dt);
+
+        if (!animationPaused)
+            elapsedTime += dt;
+    }
+
+    public void draw(Batch batch, float parentAlpha){
+
+        super.draw(batch, parentAlpha);
+
+        // apply color tint effect
+        Color color = getColor();
+        batch.setColor(color.r, color.g, color.b, color.a);
+
+        if (animation != null && isVisible())
+            batch.draw( animation.getKeyFrame(elapsedTime),
+                    getX(),
+                    getY(),
+                    getOriginX(),
+                    getOriginY(),
+                    getWidth(),
+                    getHeight(),
+                    getScaleX(),
+                    getScaleY(),
+                    getRotation());
     }
 
 }

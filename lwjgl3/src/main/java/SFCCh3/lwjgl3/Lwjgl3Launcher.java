@@ -1,8 +1,8 @@
 package SFCCh3.lwjgl3;
 
+import SFCCh3.StarfishCollector;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import SFCCh3.StarFishCollectorCh3;
 
 /** Launches the desktop (LWJGL3) application. */
 public class Lwjgl3Launcher {
@@ -11,7 +11,7 @@ public class Lwjgl3Launcher {
 	}
 
 	private static Lwjgl3Application createApplication() {
-		return new Lwjgl3Application(new StarFishCollectorCh3(), getDefaultConfiguration());
+		return new Lwjgl3Application(new StarfishCollector(), getDefaultConfiguration());
 	}
 
 	private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
