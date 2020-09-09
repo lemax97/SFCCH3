@@ -15,7 +15,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.MathUtils;
-
+import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Intersector;
 
 public class BaseActor extends Actor {
 
@@ -28,6 +29,7 @@ public class BaseActor extends Actor {
     private float acceleration;
     private float maxSpeed;
     private float deceleration;
+    private Polygon boundaryPolygon;
 
     public BaseActor(float x, float y, Stage stage) {
 
@@ -131,6 +133,68 @@ public class BaseActor extends Actor {
         accelerationVec.set(0, 0);
     }
 
+    public void setBoundaryRectangle()
+    {
+        float w = getWidth();
+        float h = getHeight();
+        float[] vertices = {0,0, w,0, w,h, 0,h};
+        boundaryPolygon = new Polygon(vertices);
+    }
+
+    public void setBoundaryPolygon(int numSides){
+
+        float w = getWidth();
+        float h = getHeight();
+
+        float[] vertices = new float[2 * numSides];
+        for (int i = 0; i < numSides; i++) {
+
+            float angle = i * 6.28f / numSides;
+            // x - coordinate
+            vertices[2*i] = w/2 * MathUtils.cos(angle) + w/2;
+            // y - coordinate
+            vertices[2*i+1] = h/2 * MathUtils.sin(angle) + h/2;
+        }
+        boundaryPolygon = new Polygon(vertices);
+    }
+
+    public Polygon getBoundaryPolygon(){
+
+        boundaryPolygon.setPosition( getX(), getY());
+        boundaryPolygon.setOrigin( getOriginX(), getOriginY());
+        boundaryPolygon.setRotation( getRotation() );
+        boundaryPolygon.setScale( getScaleX(), getScaleY());
+        return boundaryPolygon;
+    }
+
+    public boolean overlaps(BaseActor other){
+
+        Polygon polygon1 = this.getBoundaryPolygon();
+        Polygon polygon2 = other.getBoundaryPolygon();
+
+        // initial test to improve performance
+        if (!polygon1.getBoundingRectangle().overlaps(polygon2.getBoundingRectangle()))
+            return false;
+        return Intersector.overlapConvexPolygons(polygon1, polygon2);
+    }
+
+    public void centerAtPosition(float x, float y){
+
+        setPosition( x - getWidth()/2, y - getHeight()/2 );
+    }
+
+    public void centerAtActor(BaseActor other){
+
+        centerAtPosition( other.getX() + other.getWidth()/2, other.getY() + other.getHeight()/2);
+    }
+
+    public void setOpacity(float opacity){
+
+        this.getColor().a = opacity;
+    }
+
+
+
     /**---------------
     **      Animation
      **----------------
@@ -144,6 +208,9 @@ public class BaseActor extends Actor {
         float h = textureRegion.getRegionHeight();
         setSize(w, h);
         setOrigin(w/2, h/2);
+
+        if (boundaryPolygon == null)
+            setBoundaryRectangle();
     }
 
     public Animation<TextureRegion> loadAnimationFromFiles(String[] fileNames, float frameDuration, boolean loop){
