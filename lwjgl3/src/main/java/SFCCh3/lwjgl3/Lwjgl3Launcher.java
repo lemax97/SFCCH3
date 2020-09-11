@@ -1,6 +1,7 @@
 package SFCCh3.lwjgl3;
 
 import SFCCh3.StarfishCollector;
+import SFCCh3.StarfishGame;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
@@ -11,7 +12,7 @@ public class Lwjgl3Launcher {
 	}
 
 	private static Lwjgl3Application createApplication() {
-		return new Lwjgl3Application(new StarfishCollector(), getDefaultConfiguration());
+		return new Lwjgl3Application(new StarfishGame(), getDefaultConfiguration());
 	}
 
 	private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
