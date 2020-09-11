@@ -13,6 +13,7 @@ public class StarfishCollector extends GameBeta{
         BaseActor ocean = new BaseActor(0,0, mainStage);
         ocean.loadTexture("assets/water.jpg");
         ocean.setSize(800, 600);
+        BaseActor.setWorldBounds(ocean);
 
         new Starfish(400, 400, mainStage);
         new Starfish(500, 100, mainStage);

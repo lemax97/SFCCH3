@@ -16,6 +16,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Rectangle;
+
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Intersector.MinimumTranslationVector;
 
@@ -32,7 +34,9 @@ public class BaseActor extends Actor {
     private float acceleration;
     private float maxSpeed;
     private float deceleration;
+
     private Polygon boundaryPolygon;
+    private static Rectangle worldBounds;
 
     public BaseActor(float x, float y, Stage stage) {
 
@@ -56,6 +60,31 @@ public class BaseActor extends Actor {
         maxSpeed = 1000;
         deceleration = 0;
 
+    }
+
+    public static void setWorldBounds(float width, float height){
+
+        worldBounds = new Rectangle(0, 0, width, height);
+    }
+
+    public static void setWorldBounds(BaseActor baseActor){
+        setWorldBounds(baseActor.getWidth(), baseActor.getHeight());
+    }
+
+    public void boundToWorld(){
+
+        // check left edge
+        if (getX() < 0)
+            setX(0);
+        // check right edge
+        if (getX() + getWidth() > worldBounds.getWidth())
+            setX(worldBounds.width - getWidth());
+        // check bottom edge
+        if (getY() < 0)
+            setY(0);
+        // check top edge
+        if (getY() + getHeight() > worldBounds.height)
+            setY(worldBounds.height - getHeight());
     }
 
     public void setSpeed(float speed){
