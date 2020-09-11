@@ -23,7 +23,6 @@ public class Turtle extends BaseActor {
     public void act(float dt){
 
         super.act(dt);
-
         if (Gdx.input.isKeyPressed(Keys.LEFT))
             accelerateAtAngle(180);
         if (Gdx.input.isKeyPressed(Keys.RIGHT))

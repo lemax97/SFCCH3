@@ -4,37 +4,48 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
-public class LevelScreen extends BaseScreen{
-
+public class LevelScreen2 extends BaseScreen {
     private Turtle turtle;
     private boolean win, loose;
 
     @Override
     public void initialize() {
-
         BaseActor ocean = new BaseActor(0,0, mainStage);
         ocean.loadTexture("assets/water-border.jpg");
         ocean.setSize(1200, 900);
         BaseActor.setWorldBounds(ocean);
 
-        new Starfish(400, 400, mainStage);
-        new Starfish(500, 100, mainStage);
-        new Starfish(100, 450, mainStage);
-        new Starfish(200, 250, mainStage);
+        new Starfish(80, 180, mainStage);
+        new Starfish(580, 270, mainStage);
+        new Starfish(350, 350, mainStage);
+        new Starfish(420, 450, mainStage);
+        new Starfish(670, 160, mainStage);
+        new Starfish(570, 20, mainStage);
+        new Starfish(820, 410, mainStage);
 
 
-        new Rock(200, 150, mainStage);
+        new Rock(200, 450, mainStage);
         new Rock(100, 300, mainStage);
-        new Rock(300, 350, mainStage);
-        new Rock(450, 200, mainStage);
+        new Rock(300, 450, mainStage);
+        new Rock(470, 600, mainStage);
+        new Rock(200, 550, mainStage);
+        new Rock(320, 300, mainStage);
+        new Rock(640, 450, mainStage);
+        new Rock(790, 100, mainStage);
 
-        new Shark(220, 320, mainStage);
+        new Shark(120, 620, mainStage);
+        new Shark(320, 620, mainStage);
+        new Shark(720, 380, mainStage);
+        new Shark(520, 720, mainStage);
+        new Shark(220, 420, mainStage);
+        new Shark(320, 420, mainStage);
+        new Shark(620, 780, mainStage);
+        new Shark(660, 460, mainStage);
 
         turtle = new Turtle(20, 20, mainStage);
 
         win = false;
         loose = false;
-
     }
 
     @Override
@@ -95,15 +106,15 @@ public class LevelScreen extends BaseScreen{
             removeActors();
 
             BaseActor youWinMessage = new BaseActor(0, 0, uiStage);
-            youWinMessage.loadTexture("assets/message-continue.png");
+            youWinMessage.loadTexture("assets/you-win.png");
             youWinMessage.centerAtPosition(400, 300);
             youWinMessage.setOpacity(0);
             youWinMessage.addAction(Actions.delay(1));
             youWinMessage.addAction(Actions.after(Actions.fadeIn(1)));
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.C) && win){
-            StarfishGame.setActvieScreen(new LevelScreen2());
+        if (Gdx.input.isKeyPressed(Input.Keys.S) ){
+            StarfishGame.setActvieScreen(new LevelScreen());
         }
 
     }
@@ -131,7 +142,6 @@ public class LevelScreen extends BaseScreen{
 
         }
 
+
     }
-
-
 }
