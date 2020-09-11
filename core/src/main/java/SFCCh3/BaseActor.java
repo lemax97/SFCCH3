@@ -21,6 +21,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Intersector.MinimumTranslationVector;
 
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.utils.viewport.Viewport;
+
 import java.util.ArrayList;
 
 public class BaseActor extends Actor {
@@ -387,6 +390,26 @@ public class BaseActor extends Actor {
                     getScaleX(),
                     getScaleY(),
                     getRotation());
+    }
+
+    /**
+    ***     CAMERA
+     */
+
+    public void alignCamera(){
+
+        Camera camera = this.getStage().getCamera();
+        Viewport viewport = this.getStage().getViewport();
+
+        // center camera on actor
+        camera.position.set(this.getX() + this.getOriginX(), this.getY() + this.getOriginY(), 0);
+
+        // bound camera to layout
+        camera.position.x = MathUtils.clamp(camera.position.x,
+                camera.viewportWidth / 2, worldBounds.width - camera.viewportWidth / 2);
+        camera.position.y = MathUtils.clamp(camera.position.y,
+                camera.viewportHeight / 2, worldBounds.height - camera.viewportHeight / 2);
+        camera.update();
     }
 
 }
