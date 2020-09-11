@@ -19,6 +19,8 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Intersector.MinimumTranslationVector;
 
+import java.util.ArrayList;
+
 public class BaseActor extends Actor {
 
     private Animation<TextureRegion> animation;
@@ -213,6 +215,31 @@ public class BaseActor extends Actor {
         return mtv.normal;
     }
 
+
+    public static ArrayList<BaseActor> getList(Stage stage, String className){
+
+        ArrayList<BaseActor> list = new ArrayList<BaseActor>();
+
+        Class theClass = null;
+        try {
+            theClass = Class.forName(className);
+        }
+        catch (Exception error){
+            error.printStackTrace();
+        }
+        for (Actor a : stage.getActors()){
+
+            if ( theClass.isInstance( a ))
+                list.add( (BaseActor)a);
+        }
+
+        return list;
+    }
+
+    public static int count(Stage stage, String className){
+
+        return getList(stage, className).size();
+    }
     /**---------------
     **      Animation
      **----------------
