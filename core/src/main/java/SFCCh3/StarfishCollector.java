@@ -57,7 +57,7 @@ public class StarfishCollector extends GameBeta{
         if (BaseActor.count(mainStage, "SFCCh3.Starfish") == 0 && !win){
 
                 win = true;
-                BaseActor youWinMessage = new BaseActor(0, 0, mainStage);
+                BaseActor youWinMessage = new BaseActor(0, 0, uiStage);
                 youWinMessage.loadTexture("assets/you-win.png");
                 youWinMessage.centerAtPosition(400, 300);
                 youWinMessage.setOpacity(0);
