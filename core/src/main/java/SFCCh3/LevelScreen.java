@@ -86,9 +86,12 @@ public class LevelScreen extends BaseScreen{
             youLooseMessage.setOpacity(0);
             youLooseMessage.addAction(Actions.delay(0.5f));
             youLooseMessage.addAction(Actions.after(Actions.fadeIn(0.4f)));
+
+//            turtle.remove();
+
         }
 
-        if (BaseActor.count(mainStage, "SFCCh3.Starfish") == 0 && !win){
+        if (BaseActor.count(mainStage, "SFCCh3.Starfish") == 0 && !win && !loose){
 
             win = true;
 
@@ -102,8 +105,16 @@ public class LevelScreen extends BaseScreen{
             youWinMessage.addAction(Actions.after(Actions.fadeIn(1)));
         }
 
+        if (Gdx.input.isKeyPressed(Input.Keys.R)){
+            StarfishGame.setActvieScreen(new MenuScreen());
+        }
+
         if (Gdx.input.isKeyPressed(Input.Keys.C) && win){
             StarfishGame.setActvieScreen(new LevelScreen2());
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.S) && loose){
+            StarfishGame.setActvieScreen(new LevelScreen());
         }
 
     }
@@ -130,6 +141,8 @@ public class LevelScreen extends BaseScreen{
             whirlpool.setOpacity(0.25f);
 
         }
+
+        turtle.remove();
 
     }
 

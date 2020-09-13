@@ -15,7 +15,7 @@ public class LevelScreen2 extends BaseScreen {
         ocean.setSize(1200, 900);
         BaseActor.setWorldBounds(ocean);
 
-        new Starfish(80, 180, mainStage);
+        new Starfish(80, 850, mainStage);
         new Starfish(580, 270, mainStage);
         new Starfish(350, 350, mainStage);
         new Starfish(420, 450, mainStage);
@@ -38,7 +38,7 @@ public class LevelScreen2 extends BaseScreen {
         new Shark(720, 380, mainStage);
         new Shark(520, 720, mainStage);
         new Shark(220, 420, mainStage);
-        new Shark(320, 420, mainStage);
+        new Shark(1020, 420, mainStage);
         new Shark(620, 780, mainStage);
         new Shark(660, 460, mainStage);
 
@@ -91,6 +91,8 @@ public class LevelScreen2 extends BaseScreen {
 
             removeActors();
 
+            turtle.remove();
+
             BaseActor youLooseMessage = new BaseActor(0, 0, uiStage);
             youLooseMessage.loadTexture("assets/game-over.png");
             youLooseMessage.centerAtPosition(400,300);
@@ -99,7 +101,7 @@ public class LevelScreen2 extends BaseScreen {
             youLooseMessage.addAction(Actions.after(Actions.fadeIn(0.4f)));
         }
 
-        if (BaseActor.count(mainStage, "SFCCh3.Starfish") == 0 && !win){
+        if (BaseActor.count(mainStage, "SFCCh3.Starfish") == 0 && !win && !loose){
 
             win = true;
 
@@ -113,7 +115,11 @@ public class LevelScreen2 extends BaseScreen {
             youWinMessage.addAction(Actions.after(Actions.fadeIn(1)));
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.S) ){
+        if (Gdx.input.isKeyPressed(Input.Keys.R)){
+            StarfishGame.setActvieScreen(new MenuScreen());
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.S) && loose){
             StarfishGame.setActvieScreen(new LevelScreen());
         }
 
